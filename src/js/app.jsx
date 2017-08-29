@@ -7,38 +7,27 @@ export default class App extends React.Component {
   constructor(props) {
     super(props);
     this.calculate = this.calculate.bind(this);    
-    this.state = {
-      balance: 0,
-      rate: 0,
-      term: 15,
-      period: 0,
-      monthlyInterestPayments: null
-    };
+    this.state = {};
   }
 
   calculate(state) {
     var rate = $("#rate").val()/100;
-    console.log(rate);
     var balance = $("#balance").val();
-    console.log(balance);
     var term = $("#term").val();
-    console.log(term);
     var period = $("#period").val();
-    console.log(period);
 
     var n = 12*term;
     var r = rate/12;
     var numerator = (Math.pow(1+r,n))*r;
     var denominator = (Math.pow(1+r,n))-1;
-    var m = Math.round(balance * (numerator/denominator) * 100)/100;
-    console.log(m);
+    var mip = Math.round(balance * (numerator/denominator) * 100)/100;
 
     this.setState({
       rate: rate,
       balance: balance,
       term: term,
       period: period,
-      monthlyInterestPayments: m
+      mip: mip
     });
   }
 
@@ -47,7 +36,7 @@ export default class App extends React.Component {
   render() {
     return (
       <div className='container'>
-        <div className ="page-header"><h1>Mortgage Calculator</h1></div>
+        <div className ="page-header"><h3>Mortgage Calculator</h3></div>
         <div className="form-group row">
           <label className="col-2 col-form-label">Loan Balance</label>
           <input type="number" name="balance" id="balance"/>
@@ -76,7 +65,7 @@ export default class App extends React.Component {
 
         <button type="button" name="submit" className="btn btn-primary" id = "submit"
              onClick = {this.calculate} >Submit</button> 
-        <div id="output">{this.state.monthlyInterestPayments}</div>
+        <div id="output">{this.state.mip}</div>
       </div>
     );
   }
